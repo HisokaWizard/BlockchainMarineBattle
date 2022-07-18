@@ -26,7 +26,7 @@ const checkGameTokens = async (
   if (player.balance === 0) return;
   const balance = player.balance;
   player.balance = 0;
-  player.blockchainBalance = balance;
+  player.blockchainBalance += balance;
   await token.connect(owner).approve(player.address, balance);
 };
 

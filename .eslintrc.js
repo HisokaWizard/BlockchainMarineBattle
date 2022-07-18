@@ -25,4 +25,5 @@ module.exports = {
     "node/no-missing-require": "off",
     "no-use-before-define": "off",
   },
+  ignorePatterns: ["webpack.config.js"],
 };
