@@ -1,4 +1,4 @@
-import { Grade } from 'src/grade/grade.dto';
+import { Grade } from 'src/grade/grade.schema';
 
 export class UserDto {
   address: string;

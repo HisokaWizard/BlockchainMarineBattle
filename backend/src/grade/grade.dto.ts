@@ -1,6 +1,6 @@
-export type GradeType = 'base' | 'medium' | 'high';
+import { GradeType } from './grade.schema';
 
-export class Grade {
+export class GradeDto {
   price: number;
   type: GradeType;
   name: string;
