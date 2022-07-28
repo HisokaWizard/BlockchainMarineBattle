@@ -6,9 +6,7 @@ import 'dotenv/config';
 @Module({
   imports: [
     UserModule,
-    MongooseModule.forRoot(
-      `mongodb+srv://hisoka-wizard:${process.env.DATABASE_PASSWORD}>@cluster0.y33gf.mongodb.net/?retryWrites=true&w=majority`,
-    ),
+    MongooseModule.forRoot(`mongodb://localhost/BlockChainPlatform`),
   ],
 })
 export class AppModule {}

@@ -17,8 +17,9 @@ export class UserController {
     return this.userService.create(dto);
   }
 
-  @Patch()
-  update(@Body() dto: UserDto) {
-    return this.userService.update(dto);
+  @Patch(':id')
+  update(@Param('id') id: ObjectId, @Body() dto: UserDto) {
+    console.log(id, dto);
+    return this.userService.update(id, dto);
   }
 }

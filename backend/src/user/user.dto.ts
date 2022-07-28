@@ -1,4 +1,12 @@
-import { Grade } from 'src/grade/grade.schema';
+export type GradeType = 'base' | 'medium' | 'high';
+
+export class Grade {
+  price: number;
+  type: GradeType;
+  name: string;
+  score: number;
+  image: string;
+}
 
 export class UserDto {
   address: string;

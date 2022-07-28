@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { Grade } from 'src/grade/grade.schema';
+import { Grade } from './user.dto';
 
 @Schema()
 export class User {

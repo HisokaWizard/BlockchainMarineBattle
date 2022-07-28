@@ -12,8 +12,10 @@ export class UserService {
     this.userModel.create(dto);
   }
 
-  async update(dto: UserDto): Promise<void> {
-    this.userModel.findOneAndUpdate({ address: dto.address }, dto);
+  async update(id: ObjectId, dto: UserDto): Promise<void> {
+    this.userModel.findByIdAndUpdate(id, { $set: dto }, {}, (err, doc) => {
+      console.log('ERR:', err, 'DOC:', doc);
+    });
   }
 
   async get(id: ObjectId): Promise<UserDto> {
