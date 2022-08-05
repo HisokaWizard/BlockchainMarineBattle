@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -11,13 +11,16 @@ export const userApi = createApi({
         method: "POST",
         body: data,
       }),
-      transformResponse: (response: { data: any }, meta, arg) => response.data,
+      transformResponse: (response: { data: any }, meta, arg) => {
+        console.log(response.data, meta, arg);
+        return response.data;
+      },
       invalidatesTags: ["User"],
       async onQueryStarted(
         arg,
         { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
       ) {
-        console.log(arg);
+        console.log(arg, extra, queryFulfilled, requestId);
       },
       async onCacheEntryAdded(
         arg,
@@ -31,8 +34,10 @@ export const userApi = createApi({
           getCacheEntry,
         }
       ) {
-        console.log(arg);
+        console.log(arg, extra, requestId, cacheEntryRemoved, cacheDataLoaded);
       },
     }),
   }),
 });
+
+export const { useCreateUserMutation } = userApi;
