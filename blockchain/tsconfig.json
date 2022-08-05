@@ -8,6 +8,6 @@
     "outDir": "dist",
     "declaration": true
   },
-  "include": ["./blockchain/test", "./blockchain/typechain", "./frontend", "./backend", "blockchain/hardhat.config.ts"],
-  "files": ["blockchain/hardhat.config.ts"]
+  "include": ["./test", "./typechain", "./hardhat.config.ts"],
+  "files": ["./hardhat.config.ts"]
 }

@@ -2,10 +2,9 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  context: path.resolve(__dirname, "scripts"),
   mode: "development",
   // entry points (maybe more than one)
-  entry: path.resolve(__dirname, "frontend/App.tsx"),
+  entry: path.resolve(__dirname, "./src/App.tsx"),
   // directory and general file with application
   output: {
     filename: "[name].js",
@@ -24,7 +23,7 @@ module.exports = {
   plugins: [
     // update index.html after rebuild automatically
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "frontend/index.html"),
+      template: path.resolve(__dirname, "./index.html"),
     }),
   ],
   // implement loaders for different files except of js
