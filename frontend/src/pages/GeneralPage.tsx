@@ -2,9 +2,17 @@ import * as React from "react";
 import { useCallback } from "react";
 import { connectMetaMask, getEthereum } from "../web3utils/walletConnector";
 import { useCreateUserMutation } from "../store/userApi/user.api";
+import { RoutePath } from "src/routes";
+import { useNavigate } from "react-router-dom";
+import { Button, Grid, Typography } from "@mui/material";
 
 export const GeneralPage = () => {
   const [createUser] = useCreateUserMutation();
+  const navigate = useNavigate();
+
+  const navidateTo = useCallback((path: RoutePath) => {
+    navigate(path);
+  }, []);
 
   const connectWallet = useCallback(async () => {
     const accounts = await connectMetaMask();
@@ -22,9 +30,19 @@ export const GeneralPage = () => {
   }, []);
 
   return (
-    <div>
-      StartPage
-      <button onClick={connectWallet}>Connect metamask</button>
-    </div>
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <Typography variant="h3">StartPage</Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Button onClick={connectWallet}>Connect metamask</Button>
+      </Grid>
+      <Grid item xs={2}>
+        <Button onClick={() => navidateTo("/chat")}>Chat</Button>
+      </Grid>
+      <Grid item xs={2}>
+        <Button onClick={() => navidateTo("/graphics")}>Graphics</Button>
+      </Grid>
+    </Grid>
   );
 };
