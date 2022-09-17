@@ -5,13 +5,19 @@ import { useCreateUserMutation } from "../store/userApi/user.api";
 import { RoutePath } from "src/routes";
 import { useNavigate } from "react-router-dom";
 import { Button, Grid, Typography } from "@mui/material";
+import { v4 as uuid } from "uuid";
 
 export const GeneralPage = () => {
   const [createUser] = useCreateUserMutation();
   const navigate = useNavigate();
 
   const navidateTo = useCallback((path: RoutePath) => {
-    navigate(path);
+    if (path === "/chat") {
+      const uniquePath = uuid();
+      navigate(path + `/${uniquePath}`);
+    } else {
+      navigate(path);
+    }
   }, []);
 
   const connectWallet = useCallback(async () => {

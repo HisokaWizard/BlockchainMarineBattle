@@ -18,6 +18,9 @@ module.exports = {
     port: 7777,
     hot: true,
     historyApiFallback: true,
+    static: {
+      directory: path.join(__dirname, "/"),
+    },
   },
   devtool: "source-map",
   plugins: [

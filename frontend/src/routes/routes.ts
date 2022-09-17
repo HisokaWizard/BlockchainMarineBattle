@@ -3,6 +3,6 @@ import { RouteItem } from "./routes.types";
 
 export const routes: RouteItem[] = [
   { path: "/", component: GeneralPage },
-  { path: "/chat", component: ChatPage },
+  { path: "/chat/:id", component: ChatPage },
   { path: "/graphics", component: GraphicsPage },
 ];
