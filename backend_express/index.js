@@ -17,7 +17,7 @@ app.ws('/chat', (ws, req) => {
       connectionHandler(ws, data);
     }
     if (data.method === 'message') {
-      broadcastWork(ws, data);
+      broadcastConnection(data);
     }
   });
 });
@@ -25,32 +25,21 @@ app.ws('/chat', (ws, req) => {
 const connectionHandler = (ws, data) => {
   users.push(data.name);
   ws.id = data.id;
-  broadcastConnection(ws, data);
+  broadcastConnection(data);
 };
 
-const broadcastConnection = (ws, data) => {
+const broadcastConnection = (data) => {
+  if (data.method === 'message') {
+    messages.push(data.message);
+  }
   aWss.clients.forEach((client) => {
-    if (client.id === data.id && data.method === 'connection') {
-      ws.send(
+    if (client.id === data.id) {
+      client.send(
         JSON.stringify({
           method: data.method,
           messages,
           users,
-        }),
-      );
-    }
-  });
-};
-
-const broadcastWork = (ws, data) => {
-  messages.push(data.message);
-  aWss.clients.forEach((client) => {
-    if (client.id === data.id && data.method === 'message') {
-      ws.send(
-        JSON.stringify({
-          method: data.method,
-          messages,
-          users,
+          id: data.id,
         }),
       );
     }

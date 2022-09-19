@@ -20,6 +20,7 @@ type UserResponseData = {
   method: "connection" | "message";
   messages: string[];
   users: string[];
+  id: string;
 };
 
 export const ChatPage = memo(() => {
@@ -45,17 +46,14 @@ export const ChatPage = memo(() => {
         } as UserConnectData)
       );
     };
-  }, [nameIsReady, name]);
 
-  useEffect(() => {
-    if (!socket) return;
     socket.onmessage = (message) => {
       if (!message) return;
       const data: UserResponseData = JSON.parse(message.data);
       setUsers(data.users);
       dispatch(setMessages(data.messages));
     };
-  }, [socket]);
+  }, [nameIsReady, name]);
 
   const sendMessage = useCallback(() => {
     if (!socket) return;
