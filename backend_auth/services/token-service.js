@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const ApiError = require('../exeptions/api-error');
 const tokenSchema = require('../models/token');
 
 class TokenService {
@@ -11,6 +12,24 @@ class TokenService {
     };
   }
 
+  validateAccessToken(token) {
+    try {
+      const tokenData = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+      return tokenData;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  validateRefreshToken(token) {
+    try {
+      const tokenData = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+      return tokenData;
+    } catch (error) {
+      return null;
+    }
+  }
+
   async saveToken(userId, refreshToken) {
     const tokenData = await tokenSchema.findOne({ userId });
     if (tokenData) {
@@ -19,6 +38,16 @@ class TokenService {
     }
     const token = tokenSchema.create({ userId, refreshToken });
     return token;
+  }
+
+  async removeToken(refreshToken) {
+    const token = await tokenSchema.deleteOne({ refreshToken });
+    return token;
+  }
+
+  async findToken(token) {
+    const tokenData = await tokenSchema.findOne({ token });
+    return tokenData;
   }
 }
 

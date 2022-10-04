@@ -17,7 +17,7 @@ class MailService {
     await this.transporter.sendMail({
       from: process.env.SMTP_USER,
       to,
-      subject: 'Activation link for app ' + process.env.APP_URL,
+      subject: 'Activation link for app ' + process.env.SERVER_URL,
       text: '',
       html: `
         <div>

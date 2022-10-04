@@ -1,19 +1,29 @@
 const userService = require('../services/user-service');
+const { validationResult } = require('express-validator');
+const ApiError = require('../exeptions/api-error');
 
 const thirtyDaysMillisec = 30 * 24 * 60 * 60 * 1000;
+
+const setRefreshToken = (res, token) => {
+  res.cookie('refreshToken', token, {
+    maxAge: thirtyDaysMillisec,
+    httpOnly: true,
+  });
+};
 
 class UserController {
   async registration(req, res, next) {
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return next(ApiError.BadRequest('Validation error', errors.array()));
+      }
       const { email, password } = req.body;
       const userResult = await userService.registration(email, password);
-      res.cookie('refreshToken', userResult.refreshToken, {
-        maxAge: thirtyDaysMillisec,
-        httpOnly: true,
-      });
-      res.send(userResult);
+      setRefreshToken(res, userResult.refreshToken);
+      return res.json(userResult);
     } catch (error) {
-      console.log(error);
+      next(error);
     }
   }
 
@@ -21,35 +31,52 @@ class UserController {
     try {
       const { email, password } = req.body;
       const userResult = await userService.login(email, password);
-      res.cookie('refreshToken', userResult.refreshToken, {
-        maxAge: thirtyDaysMillisec,
-        httpOnly: true,
-      });
-      res.send(userResult);
+      setRefreshToken(res, userResult.refreshToken);
+      return res.json(userResult);
     } catch (error) {
-      console.log(error);
+      next(error);
     }
   }
 
   async logout(req, res, next) {
     try {
-    } catch (error) {}
+      const { refreshToken } = req.cookies;
+      const token = await userService.logout(refreshToken);
+      res.clearCookie('refreshToken');
+      return res.json(token);
+    } catch (error) {
+      next(error);
+    }
   }
 
-  async active(req, res, next) {
+  async activate(req, res, next) {
     try {
-    } catch (error) {}
+      const activationLink = req.params.link;
+      await userService.activate(activationLink);
+      res.redirect(process.env.CLIENT_URL);
+    } catch (error) {
+      next(error);
+    }
   }
 
   async refresh(req, res, next) {
     try {
-    } catch (error) {}
+      const { refreshToken } = req.cookies;
+      const token = await userService.refresh(refreshToken);
+      setRefreshToken(res, refreshToken);
+      return res.json(token);
+    } catch (error) {
+      next(error);
+    }
   }
 
   async getUsers(req, res, next) {
     try {
-      res.json([{ name: 'Petr', surname: 'Nikolaev', age: 29 }]);
-    } catch (error) {}
+      const users = await userService.getAllUsers();
+      return res.json(users);
+    } catch (error) {
+      next(error);
+    }
   }
 }
 
