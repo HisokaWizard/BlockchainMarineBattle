@@ -1,5 +1,5 @@
 import { Button, Grid, TextField, Typography } from "@mui/material";
-import React, { memo, useCallback, useEffect, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setMessages, setSocket, useChatData } from "../store/chat.slice";
 import { useParams } from "react-router-dom";
@@ -66,57 +66,102 @@ export const ChatPage = memo(() => {
     );
   }, [message, socket]);
 
-  return (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <Typography variant="h3">Chat room</Typography>
-      </Grid>
-      <Grid item xs={"auto"}>
-        <TextField
-          onChange={(e) => setName(e.target.value)}
-          label={"User name"}
-          variant={"outlined"}
-          disabled={nameIsReady}
-          size={"small"}
-        />
-      </Grid>
-      <Grid item xs={"auto"}>
-        <Button variant="outlined" onClick={() => setNameIsReady(true)}>
-          Set name
-        </Button>
-      </Grid>
-
-      <Grid item xs={12}>
-        <Grid
-          container
-          spacing={2}
-          sx={{ backgroundColor: "pink", borderRadius: 10 }}
-        >
-          {users.map((it, index) => (
-            <Grid item key={index} xs={"auto"}>
-              {it}
-            </Grid>
-          ))}
+  const header = useMemo(() => {
+    return (
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Typography variant="h3">Chat room</Typography>
+        </Grid>
+        <Grid item xs={3}>
+          <TextField
+            fullWidth
+            onChange={(e) => setName(e.target.value)}
+            label={"User name"}
+            variant={"outlined"}
+            disabled={nameIsReady}
+            size={"small"}
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={() => setNameIsReady(true)}
+          >
+            Set name
+          </Button>
         </Grid>
       </Grid>
+    );
+  }, [nameIsReady]);
 
-      <Grid
-        item
-        xs={12}
-        sx={{ minHeight: 300, border: "1px solid lightblue" }}
-        margin={3}
-      >
-        <Grid container spacing={3}>
+  const messageInput = useMemo(() => {
+    return (
+      <Grid container spacing={3}>
+        <Grid item xs={6}>
+          <TextField
+            fullWidth
+            onChange={(e) => setMessage(e.target.value)}
+            label="Message"
+            variant="outlined"
+            disabled={!nameIsReady}
+            size={"small"}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={sendMessage}
+            disabled={!nameIsReady}
+          >
+            Send
+          </Button>
+        </Grid>
+      </Grid>
+    );
+  }, [nameIsReady, sendMessage]);
+
+  return (
+    <Grid container spacing={3} display="flex" justifyContent={"center"}>
+      <Grid item xs={10}>
+        {header}
+      </Grid>
+      <Grid item xs={10}>
+        <div style={{ backgroundColor: "lightblue", padding: 10 }}>
+          <span style={{ marginRight: 10 }}>User list:</span>
+          {users.map((it, index) => (
+            <span style={{ marginRight: 10 }} key={index}>
+              [{it}]
+            </span>
+          ))}
+        </div>
+      </Grid>
+
+      <Grid item xs={10}>
+        <Grid
+          container
+          sx={{
+            minHeight: 300,
+            border: "1px solid lightblue",
+            overflowY: "auto",
+            maxHeight: 300,
+          }}
+        >
           {messages.map((it, index) => {
             return (
               <Grid
                 item
                 key={index}
-                xs={6}
+                xs={8}
                 sx={{
                   border: "1px solid lightgrey",
-                  borderRadius: 4,
-                  backgroundColor: "crimson",
+                  borderRadius: 2,
+                  backgroundColor: "lightcoral",
+                  height: 52,
+                  marginLeft: 1,
+                  marginTop: 1,
+                  padding: 2,
                 }}
               >
                 {it}
@@ -125,30 +170,8 @@ export const ChatPage = memo(() => {
           })}
         </Grid>
       </Grid>
-      <Grid
-        container
-        spacing={3}
-        display={"flex"}
-        justifyContent={"space-between"}
-      >
-        <Grid item ml={3}>
-          <TextField
-            onChange={(e) => setMessage(e.target.value)}
-            label="Message"
-            variant="outlined"
-            disabled={!nameIsReady}
-            size={"small"}
-          />
-        </Grid>
-        <Grid item mr={3}>
-          <Button
-            variant="outlined"
-            onClick={sendMessage}
-            disabled={!nameIsReady}
-          >
-            Send
-          </Button>
-        </Grid>
+      <Grid item xs={10}>
+        {messageInput}
       </Grid>
     </Grid>
   );

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { connectMetaMask, getEthereum } from "../web3utils/walletConnector";
 import { useCreateUserMutation } from "../store/userApi/user.api";
 import { RoutePath } from "src/routes";
@@ -8,8 +8,16 @@ import { Button, Grid, Typography } from "@mui/material";
 import { v4 as uuid } from "uuid";
 
 export const GeneralPage = () => {
-  const [createUser] = useCreateUserMutation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("cookine", document.cookie);
+    if (!document.cookie) {
+      navigate("/login");
+    }
+  }, []);
+
+  const [createUser] = useCreateUserMutation();
 
   const navidateTo = useCallback((path: RoutePath) => {
     if (path === "/chat") {
