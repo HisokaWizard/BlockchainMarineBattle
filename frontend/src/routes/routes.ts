@@ -1,4 +1,10 @@
-import { ChatPage, GeneralPage, GraphicsPage, LoginPage } from "../pages";
+import {
+  ChatPage,
+  GeneralPage,
+  GraphicsPage,
+  LoginPage,
+  RegistrationPage,
+} from "../pages";
 import { RouteItem } from "./routes.types";
 
 export const routes: RouteItem[] = [
@@ -6,4 +12,5 @@ export const routes: RouteItem[] = [
   { path: "/chat/:id", component: ChatPage },
   { path: "/graphics", component: GraphicsPage },
   { path: "/login", component: LoginPage },
+  { path: "/registration", component: RegistrationPage },
 ];

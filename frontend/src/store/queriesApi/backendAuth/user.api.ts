@@ -1,45 +1,16 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { baseQuery, UserAuth, UserDto } from "./user.types";
+import { axiosQuery, baseQueryWithReAuth } from "../../../utils";
+import { UserDto } from "./user.types";
 
-// type UserApiUrls = "registration" | "login" | "users" | "logout";
-
-export const userAuthApi = createApi({
-  reducerPath: "userAuthApi",
-  baseQuery,
+export const userServiceApi = createApi({
+  reducerPath: "userServiceApi",
+  baseQuery: baseQueryWithReAuth,
   tagTypes: ["user"],
   endpoints: (builder) => ({
-    registration: builder.mutation<any, UserAuth>({
-      query: (data) => ({
-        url: "registration",
-        method: "POST",
-        body: data,
-        headers: { "Content-Type": "application/json" },
-      }),
-    }),
-    login: builder.mutation<any, UserAuth>({
-      query: (data) => ({
-        url: "login",
-        method: "POST",
-        body: data,
-        headers: { "Content-Type": "application/json" },
-      }),
-    }),
-    users: builder.query<void, UserDto>({
-      query: () => ({
-        url: "users",
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      }),
-    }),
-    logout: builder.mutation<void, void>({
-      query: () => ({
-        url: "logout",
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      }),
+    users: builder.query<UserDto[], void>({
+      query: () => axiosQuery.get("users"),
     }),
   }),
 });
 
-export const { useLoginMutation, useRegistrationMutation, useUsersQuery } =
-  userAuthApi;
+export const { useUsersQuery, useLazyUsersQuery } = userServiceApi;

@@ -6,13 +6,35 @@ import { RoutePath } from "src/routes";
 import { useNavigate } from "react-router-dom";
 import { Button, Grid, Typography } from "@mui/material";
 import { v4 as uuid } from "uuid";
+import { useLogoutMutation } from "../store/queriesApi/backendAuth/auth.api";
+import { isAuth, isSuccess, throwNewError } from "../utils";
+import { useLazyUsersQuery } from "../store/queriesApi/backendAuth/user.api";
 
 export const GeneralPage = () => {
   const navigate = useNavigate();
+  const [logout] = useLogoutMutation();
+  const [getAllUsers, { data }] = useLazyUsersQuery();
+
+  const logoutAction = useCallback(async () => {
+    try {
+      const result = await logout();
+      if (isSuccess(result)) {
+        localStorage.removeItem("token");
+        navigate("/login");
+      } else {
+        throwNewError(result);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [logout]);
+
+  const getUsers = useCallback(() => {
+    getAllUsers();
+  }, []);
 
   useEffect(() => {
-    console.log("cookine", document.cookie);
-    if (!document.cookie) {
+    if (!isAuth()) {
       navigate("/login");
     }
   }, []);
@@ -56,6 +78,25 @@ export const GeneralPage = () => {
       </Grid>
       <Grid item xs={2}>
         <Button onClick={() => navidateTo("/graphics")}>Graphics</Button>
+      </Grid>
+      <Grid item xs={2}>
+        <Button onClick={getUsers}>Get user list</Button>
+      </Grid>
+      <Grid item xs={2}>
+        <Button onClick={logoutAction}>Logout</Button>
+      </Grid>
+      <Grid item xs={12}>
+        <Grid container spacing={3}>
+          {data &&
+            data.map((it, index) => {
+              return (
+                <Grid item xs={12} key={it.email + index}>
+                  Email: {it.email}
+                  Activated: {it.isActivated}
+                </Grid>
+              );
+            })}
+        </Grid>
       </Grid>
     </Grid>
   );

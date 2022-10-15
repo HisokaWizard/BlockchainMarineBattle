@@ -1,27 +1,20 @@
 import { Button, Grid, TextField } from "@mui/material";
 import React, { memo, useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { isSuccess, throwNewError } from "../utils";
-import { useLoginMutation } from "../store/queriesApi/backendAuth/auth.api";
+import { useRegistrationMutation } from "../store/queriesApi/backendAuth/auth.api";
 
-export const LoginPage = memo(() => {
+export const RegistrationPage = memo(() => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [sendLogin] = useLoginMutation();
+  const [sendRegistration] = useRegistrationMutation();
   const [error, setError] = useState("");
-  const navigate = useNavigate();
-
-  const goToRegistration = useCallback(() => {
-    navigate("/registration");
-  }, [navigate]);
 
   const sendQuery = useCallback(async () => {
     if (!password || !email) return;
     try {
-      const result = await sendLogin({ email, password });
+      const result = await sendRegistration({ email, password });
       if (isSuccess(result)) {
-        localStorage.setItem("token", result.data.accessToken);
-        navigate("/");
+        window.location.replace("https://mail.google.com");
       } else {
         throwNewError(result);
       }
@@ -67,13 +60,8 @@ export const LoginPage = memo(() => {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Button fullWidth variant="outlined" onClick={goToRegistration}>
-              Registration
-            </Button>
-          </Grid>
-          <Grid item xs={12} sm={6}>
             <Button fullWidth variant="outlined" onClick={sendQuery}>
-              Login
+              Registration
             </Button>
           </Grid>
         </Grid>

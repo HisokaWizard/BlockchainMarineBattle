@@ -64,7 +64,7 @@ class UserService {
     if (!validatedToken || !tokenFromDb) {
       throw ApiError.UnauthorizedError();
     }
-    const user = userSchema.findById(tokenFromDb.id);
+    const user = userSchema.findById(tokenFromDb.userId);
     return updateAndSetToken(user, tokenService);
   }
 

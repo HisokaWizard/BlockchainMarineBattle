@@ -13,3 +13,9 @@ export interface UserDto {
   isActivated: boolean;
   activationLink: string;
 }
+
+export interface AuthResponseDto {
+  accessToken: string;
+  refreshToken: string;
+  user: UserDto;
+}
