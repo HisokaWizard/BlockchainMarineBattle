@@ -91,8 +91,8 @@ export const GeneralPage = () => {
             data.map((it, index) => {
               return (
                 <Grid item xs={12} key={it.email + index}>
-                  Email: {it.email}
-                  Activated: {it.isActivated}
+                  Email: {it.email}; Activated:{" "}
+                  {it.isActivated ? "Activated" : "Not activated"}
                 </Grid>
               );
             })}
