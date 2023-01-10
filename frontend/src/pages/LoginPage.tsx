@@ -47,6 +47,7 @@ export const LoginPage = memo(() => {
         <Grid container spacing={4} mt={25}>
           <Grid item xs={12}>
             <TextField
+              data-testid="EmailInput"
               variant="outlined"
               placeholder="Email"
               fullWidth
@@ -57,6 +58,7 @@ export const LoginPage = memo(() => {
           </Grid>
           <Grid item xs={12}>
             <TextField
+              data-testid="PasswordInput"
               variant="outlined"
               fullWidth
               type={"password"}
@@ -67,12 +69,22 @@ export const LoginPage = memo(() => {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Button fullWidth variant="outlined" onClick={goToRegistration}>
+            <Button
+              data-testid="RegistrationButton"
+              fullWidth
+              variant="outlined"
+              onClick={goToRegistration}
+            >
               Registration
             </Button>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Button fullWidth variant="outlined" onClick={sendQuery}>
+            <Button
+              data-testid="LoginButton"
+              fullWidth
+              variant="outlined"
+              onClick={sendQuery}
+            >
               Login
             </Button>
           </Grid>

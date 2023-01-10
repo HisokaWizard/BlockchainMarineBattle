@@ -71,19 +71,32 @@ export const GeneralPage = () => {
         <Typography variant="h3">StartPage</Typography>
       </Grid>
       <Grid item xs={12}>
-        <Button onClick={connectWallet}>Connect metamask</Button>
+        <Button data-testid={"ConnectMetamaskButton"} onClick={connectWallet}>
+          Connect metamask
+        </Button>
       </Grid>
       <Grid item xs={2}>
-        <Button onClick={() => navidateTo("/chat")}>Chat</Button>
+        <Button data-testid={"ChatButton"} onClick={() => navidateTo("/chat")}>
+          Chat
+        </Button>
       </Grid>
       <Grid item xs={2}>
-        <Button onClick={() => navidateTo("/graphics")}>Graphics</Button>
+        <Button
+          data-testid={"GraphicButton"}
+          onClick={() => navidateTo("/graphics")}
+        >
+          Graphics
+        </Button>
       </Grid>
       <Grid item xs={2}>
-        <Button onClick={getUsers}>Get user list</Button>
+        <Button data-testid={"GetUserButton"} onClick={getUsers}>
+          Get user list
+        </Button>
       </Grid>
       <Grid item xs={2}>
-        <Button onClick={logoutAction}>Logout</Button>
+        <Button data-testid={"LogoutButton"} onClick={logoutAction}>
+          Logout
+        </Button>
       </Grid>
       <Grid item xs={12}>
         <Grid container spacing={3}>
